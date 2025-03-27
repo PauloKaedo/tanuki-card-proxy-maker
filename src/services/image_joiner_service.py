@@ -26,8 +26,8 @@ class ImageJoinerService:
                 row = idx // config.MAX_COLUMNS
                 column = idx % config.MAX_COLUMNS
 
-                offset_x = int(column * config.CARD_PRINT_WIDTH + config.MARGIN_CM * config._PIXELS_PER_CM)
-                offset_y = int(row * config.CARD_PRINT_HEIGHT + config.MARGIN_CM * config._PIXELS_PER_CM)
+                offset_x = int(config._SHEET_MARGIN_PX + column * config.CARD_PRINT_WIDTH)
+                offset_y = int(config._SHEET_MARGIN_PX + row * config.CARD_PRINT_HEIGHT)
 
                 a3_sheet.paste(image, (offset_x, offset_y))
                 print(f"Anexando a imagem {filename} na pagina {page}.")
