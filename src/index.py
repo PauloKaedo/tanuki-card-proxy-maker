@@ -5,6 +5,8 @@ from services.image_joiner_service import ImageJoinerService
 
 
 if __name__ == "__main__":
+    #If need duplicate cards for tests: 
+    # ImageResizerService.duplicate(40)
+
     images: List[tuple[str, Image.Image]] = ImageResizerService.execute()
-    filename, image = images[0]
     ImageJoinerService.execute(images)

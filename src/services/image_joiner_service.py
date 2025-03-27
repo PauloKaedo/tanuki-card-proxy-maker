@@ -19,7 +19,7 @@ class ImageJoinerService:
             a3_sheet = Image.new("RGB", (config._A3_WIDTH_PX, config._A3_HEIGHT_PX), "white")
 
             start_index = page * config.MAX_CARDS
-            end_index = page + config.MAX_CARDS
+            end_index = start_index + config.MAX_CARDS
             image_to_join = images[start_index:end_index]
             
             for idx, (filename, image) in enumerate(image_to_join):
