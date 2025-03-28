@@ -128,4 +128,4 @@ Built with  Python
 
 ## 📜 License
 
-MIT License – do whatever you want, just don't sell Dark Magician without sleeves.
+MIT License.
