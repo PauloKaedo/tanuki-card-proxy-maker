@@ -40,10 +40,6 @@ class Config:
     _A4_WIDTH_PX = int(21 * DPI / INCH_PATTERN)
     _A4_HEIGHT_PX = int(29.7 * DPI / INCH_PATTERN)
 
-
-    def __init__(self):
-        pass
-
     
     def configure_proxy(self,  proxyPattern: ProxyPatternEnum, sheetType: SheetType):
         self.set_proxy_pattern(proxyPattern)
