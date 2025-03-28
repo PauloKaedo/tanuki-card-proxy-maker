@@ -4,19 +4,21 @@ from math import floor
 from typing import List
 from PIL import Image
 from configs.config import Config
+from enums.sheet_type_enum import SheetType
 
 class ImageJoinerService:
     
     @staticmethod
-    def execute(images: List[tuple[str, Image.Image]]):
+    def execute(images: List[tuple[str, Image.Image]], sheetType: SheetType):
         config = Config()
+        config.set_sheet_size(sheetType)
 
         total_sheets = (len(images) + config.MAX_CARDS -1) // config.MAX_CARDS
 
-        print(f"Salvando {len(images)} imagens num total de {total_sheets} paginas A3")
+        print(f"Salvando {len(images)} imagens num total de {total_sheets} paginas")
 
         for page in range(total_sheets):
-            a3_sheet = Image.new("RGB", (config._A3_WIDTH_PX, config._A3_HEIGHT_PX), "white")
+            single_sheet = Image.new("RGB", (config.SHEET_WIDTH_PX, config.SHEET_HEIGTH_PX), "white")
 
             start_index = page * config.MAX_CARDS
             end_index = start_index + config.MAX_CARDS
@@ -29,9 +31,9 @@ class ImageJoinerService:
                 offset_x = int(config._SHEET_MARGIN_PX + column * config.CARD_PRINT_WIDTH)
                 offset_y = int(config._SHEET_MARGIN_PX + row * config.CARD_PRINT_HEIGHT)
 
-                a3_sheet.paste(image, (offset_x, offset_y))
+                single_sheet.paste(image, (offset_x, offset_y))
                 print(f"Anexando a imagem {filename} na pagina {page}.")
 
                
-            final_filename = os.path.join(config.OUTPUT_FOLDER_RESIZED, f"resized_cards_{idx+1:02}.png")
-            a3_sheet.save(final_filename, dpi=(config.DPI, config.DPI))
+            final_filename = os.path.join(config.OUTPUT_FOLDER_RESIZED, f"proxy_cards_{page+1:02}.png")
+            single_sheet.save(final_filename, dpi=(config.DPI, config.DPI))
