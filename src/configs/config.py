@@ -1,16 +1,17 @@
 from enums.pattern_enum import PatternEnum
+from enums.sheet_type_enum import SheetType
 
 class Config:
-    INPUT_FOLDER_RAW = "assets/images/raw"
-    OUTPUT_FOLDER_RESIZED = "assets/images/resized"
+    INPUT_FOLDER_RAW = "assets/images/raw_cards"
+    OUTPUT_FOLDER_RESIZED = "assets/images/proxies"
     PROXY_PATTERN = PatternEnum.DEFAULT
     
 
     #Print Pattern
     DPI = 300
     INCH_PATTERN = 2.54
-    SHEET_MARGIN_CM = 1
-    CARD_SPACING_CM = 0.5
+    SHEET_MARGIN_CM = 0.5
+    CARD_SPACING_CM = 0.3
 
 
     #Default TCG Size Pattern
@@ -30,6 +31,10 @@ class Config:
 
 
     #Sheet Page Pattern
+    SHEET_WIDTH_PX = 0
+    SHEET_HEIGTH_PX = 0
+    
+    
     _A3_WIDTH_PX = int(29.7 * DPI / INCH_PATTERN)
     _A3_HEIGHT_PX = int(42 * DPI / INCH_PATTERN)
 
@@ -52,7 +57,20 @@ class Config:
 
         self.CARD_PRINT_WIDTH = self.RESIZED_WIDTH + self._CARD_SPACING_PX * 2
         self.CARD_PRINT_HEIGHT = self.RESIZED_HEIGHT + self._CARD_SPACING_PX * 2
-        self.MAX_COLUMNS = self._A3_WIDTH_PX // self.CARD_PRINT_WIDTH
-        self.MAX_ROWS = self._A3_HEIGHT_PX // self.CARD_PRINT_HEIGHT
-        self.MAX_CARDS = self.MAX_COLUMNS * self.MAX_ROWS
+        
+    
+    def set_sheet_size(self, sheetType: SheetType = SheetType.A3_SHEET):
+        if sheetType == SheetType.A3_SHEET:
+            self.MAX_COLUMNS = self._A3_WIDTH_PX // self.CARD_PRINT_WIDTH
+            self.MAX_ROWS = self._A3_HEIGHT_PX // self.CARD_PRINT_HEIGHT
+            self.MAX_CARDS = self.MAX_COLUMNS * self.MAX_ROWS
+            self.SHEET_WIDTH_PX = self._A3_WIDTH_PX
+            self.SHEET_HEIGTH_PX = self._A3_HEIGHT_PX
+            
+        elif sheetType == SheetType.A4_SHEET:
+            self.MAX_COLUMNS = self._A4_WIDTH_PX // self.CARD_PRINT_WIDTH
+            self.MAX_ROWS = self._A4_HEIGHT_PX // self.CARD_PRINT_HEIGHT
+            self.MAX_CARDS = self.MAX_COLUMNS * self.MAX_ROWS
+            self.SHEET_WIDTH_PX = self._A4_WIDTH_PX
+            self.SHEET_HEIGTH_PX = self._A4_HEIGHT_PX
 

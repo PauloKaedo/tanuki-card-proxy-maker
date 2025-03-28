@@ -65,6 +65,12 @@ db.sqlite3-journal
 instance/
 .webassets-cache
 
+# Assets
+assets/images/raw_cards/*
+assets/images/proxies/*
+!assets/images/raw_cards/.gitkeep
+!assets/images/proxies/.gitkeep
+
 # Scrapy stuff:
 .scrapy
 
