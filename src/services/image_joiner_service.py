@@ -4,14 +4,15 @@ from math import floor
 from typing import List
 from PIL import Image
 from configs.config import Config
+from enums.proxy_pattern_enum import ProxyPatternEnum
 from enums.sheet_type_enum import SheetType
 
 class ImageJoinerService:
     
     @staticmethod
-    def execute(images: List[tuple[str, Image.Image]], sheetType: SheetType):
+    def execute(images: List[tuple[str, Image.Image]], proxyPattern: ProxyPatternEnum = ProxyPatternEnum.DEFAULT, sheetType: SheetType = SheetType.A3_SHEET):
         config = Config()
-        config.set_sheet_size(sheetType)
+        config.configure_proxy(proxyPattern, sheetType)
 
         total_sheets = (len(images) + config.MAX_CARDS -1) // config.MAX_CARDS
 

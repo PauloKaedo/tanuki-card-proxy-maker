@@ -1,10 +1,9 @@
-from enums.pattern_enum import PatternEnum
+from enums.proxy_pattern_enum import ProxyPatternEnum
 from enums.sheet_type_enum import SheetType
 
 class Config:
     INPUT_FOLDER_RAW = "assets/images/raw_cards"
     OUTPUT_FOLDER_RESIZED = "assets/images/proxies"
-    PROXY_PATTERN = PatternEnum.DEFAULT
     
 
     #Print Pattern
@@ -15,13 +14,13 @@ class Config:
 
 
     #Default TCG Size Pattern
-    DEFAULT_TARGET_WIDTH_CM = 6.2
-    DEFAULT_TARGET_HEIGHT_CM = 8.65
+    DEFAULT_TARGET_WIDTH_CM = 6.35
+    DEFAULT_TARGET_HEIGHT_CM = 8.88
 
 
     #YUGI TCG Pattern
-    YUGIOH_TARGET_WIDTH_CM = 5.8
-    YUGIOH_TARGET_HEIGHT_CM = 8.45
+    YUGIOH_TARGET_WIDTH_CM = 5.9
+    YUGIOH_TARGET_HEIGHT_CM = 8.6
 
 
     #Sheet Unity Pattern
@@ -41,17 +40,17 @@ class Config:
     _A4_WIDTH_PX = int(21 * DPI / INCH_PATTERN)
     _A4_HEIGHT_PX = int(29.7 * DPI / INCH_PATTERN)
 
-
-    def __init__(self):
-        self.define_pattern()
-
-
-    def define_pattern(self):
-        if self.PROXY_PATTERN == PatternEnum.DEFAULT:
+    
+    def configure_proxy(self,  proxyPattern: ProxyPatternEnum, sheetType: SheetType):
+        self.set_proxy_pattern(proxyPattern)
+        self.set_sheet_size(sheetType)
+    
+    def set_proxy_pattern(self, proxy_pattern: ProxyPatternEnum):
+        if proxy_pattern == ProxyPatternEnum.DEFAULT:
             self.RESIZED_WIDTH = int(self.DEFAULT_TARGET_WIDTH_CM * self._PIXELS_PER_CM)
             self.RESIZED_HEIGHT = int(self.DEFAULT_TARGET_HEIGHT_CM * self._PIXELS_PER_CM)
 
-        elif self.PROXY_PATTERN == PatternEnum.YUGIOH:
+        elif proxy_pattern == ProxyPatternEnum.YUGIOH:
             self.RESIZED_WIDTH = int(self.YUGIOH_TARGET_WIDTH_CM * self._PIXELS_PER_CM)
             self.RESIZED_HEIGHT = int(self.YUGIOH_TARGET_HEIGHT_CM * self._PIXELS_PER_CM)
 
@@ -59,7 +58,7 @@ class Config:
         self.CARD_PRINT_HEIGHT = self.RESIZED_HEIGHT + self._CARD_SPACING_PX * 2
         
     
-    def set_sheet_size(self, sheetType: SheetType = SheetType.A3_SHEET):
+    def set_sheet_size(self, sheetType: SheetType):
         if sheetType == SheetType.A3_SHEET:
             self.MAX_COLUMNS = self._A3_WIDTH_PX // self.CARD_PRINT_WIDTH
             self.MAX_ROWS = self._A3_HEIGHT_PX // self.CARD_PRINT_HEIGHT
