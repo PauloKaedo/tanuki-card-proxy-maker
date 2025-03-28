@@ -1,1 +1,4 @@
 pillow
+requests
+bs4
+playwright

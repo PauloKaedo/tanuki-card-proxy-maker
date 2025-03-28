@@ -6,9 +6,10 @@ from services.image_resizer_service import ImageResizerService
 from services.image_joiner_service import ImageJoinerService
 from enums.proxy_pattern_enum import ProxyPatternEnum
 from enums.sheet_type_enum import SheetType
+from scraping.one_piece_scraper import OnePieceScrap
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description="Tanuki Card Proxy Maker")
     
     parser.add_argument(
@@ -34,3 +35,8 @@ if __name__ == "__main__":
     
     images: List[tuple[str, Image.Image]] = ImageResizerService.execute(pattern_enum)
     ImageJoinerService.execute(images, pattern_enum, sheet_enum)
+
+if __name__ == "__main__":
+    #main()
+    op_scraper = OnePieceScrap()
+    print(op_scraper.fetch_src_image("""2xEB01-018"""))
