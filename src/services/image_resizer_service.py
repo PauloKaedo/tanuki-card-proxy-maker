@@ -13,7 +13,7 @@ class ImageResizerService:
         config = Config()
         config.set_proxy_pattern(proxyPattern)
         for filename in os.listdir(config.INPUT_FOLDER_RAW):
-            if filename.lower().endswith(('png', 'jpg', 'jpeg', 'bmp', 'webm')):
+            if filename.lower().endswith(('png', 'jpg', 'jpeg', 'bmp', 'webm', 'webp')):
                 input_path = os.path.join(config.INPUT_FOLDER_RAW, filename)
                 
                 with Image.open(input_path) as img:
