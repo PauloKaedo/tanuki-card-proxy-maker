@@ -35,8 +35,8 @@ def main():
         "--clean", "-c",
         type=str,
         choices=[e.value for e in CleanFolderEnum],
-        default="ed",
-        help="Limpa a pasta de imagens de cartas unitárias Antes ou Depois do processo (st = Start, ed = End)"
+        default="none",
+        help="Limpa a pasta de imagens de cartas unitárias Antes ou Depois do processo. Pode também SOMENTE limpar a pasta com o Just Clean. (st = Start, ed = End, jcn = Just Clean)"
     )
     
     parser.add_argument(
@@ -49,21 +49,28 @@ def main():
     link = args.link
     pattern_enum = ProxyPatternEnum(args.pattern)
     sheet_enum = SheetType(args.sheet)
+    clean_enum = CleanFolderEnum(args.clean)
     
-    if args.clean == CleanFolderEnum.START:
-        FolderCleaner.clean_raw_folder()
-        print("A pasta de imagens unitárias foi limpa no inicio do processo")
+    if  clean_enum != CleanFolderEnum.JUST_CLEAN:
+        if args.clean == CleanFolderEnum.START:
+            FolderCleaner.clean_raw_folder()
+            print("A pasta de imagens unitárias foi limpa no inicio do processo")
+            
+        if link:
+            card_dict = OnePieceSpellmanaScrap.fetch_src_image(link)
+            ImageDownloader.download_image(card_dict)
         
-    if link:
-        card_dict = OnePieceSpellmanaScrap.fetch_src_image(link)
-        ImageDownloader.download_image(card_dict)
-    
-    images: List[tuple[str, Image.Image]] = ImageResizerService.execute(pattern_enum)
-    ImageJoinerService.execute(images, pattern_enum, sheet_enum)
-    
-    if args.clean == CleanFolderEnum.END:
-        FolderCleaner.clean_raw_folder()
-        print("A pasta de imagens unitárias foi limpa no fim do processo")
+        images: List[tuple[str, Image.Image]] = ImageResizerService.execute(pattern_enum)
+        ImageJoinerService.execute(images, pattern_enum, sheet_enum)
+        
+        if clean_enum == CleanFolderEnum.END:
+            FolderCleaner.clean_raw_folder()
+            print("A pasta de imagens unitárias foi limpa no fim do processo")
+            
+    elif clean_enum == CleanFolderEnum.JUST_CLEAN:
+         FolderCleaner.clean_raw_folder()
+         print("A pasta de imagens unitárias foi limpa. Finalizando processo")
+        
 
 if __name__ == "__main__":
     main()

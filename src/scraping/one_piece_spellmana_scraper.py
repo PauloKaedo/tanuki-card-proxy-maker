@@ -11,10 +11,13 @@ class OnePieceSpellmanaScrap(BaseScraper):
     @staticmethod
     def fetch_src_image(deck_url: str):
         
-        deck_anchor = "zoro"
+        if "#" not in deck_url:
+            raise ValueError("A Url do Deck possui um valor incompatível com o Tanuki Proxy Card Maker.")
+        
+        deck_anchor = deck_url.split("#", 1)[-1]
         
         with sync_playwright() as p:
-            browser = p.chromium.launch(headless=True)
+            browser = p.chromium.launch(headless=False)
             page = browser.new_page()
             page.goto(deck_url, wait_until="domcontentloaded", timeout=60000)
            
